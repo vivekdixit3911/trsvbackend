@@ -11,6 +11,10 @@ router.post('/', async (req, res) => {
     const booking = new Booking(req.body);
     await booking.save();
 
+    // Send SMS notification with booking details
+    const smsMessage = `New Booking: From ${booking.from} to ${booking.to}, Date: ${new Date(booking.date).toLocaleDateString()}, Passengers: ${booking.passengers}, Phone: ${booking.phoneNumber}`;
+    await sendSMS(smsMessage);
+
     // Create a detailed email HTML template
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -79,17 +83,6 @@ router.post('/', async (req, res) => {
       success: false, 
       error: error.message 
     });
-  }
-});
-
-// Get all bookings
-router.get('/', async (req, res) => {
-  try {
-    const bookings = await Booking.find();
-    res.status(200).json({ success: true, data: bookings });
-  } catch (error) {
-    console.error('Error fetching bookings:', error);
-    res.status(500).json({ success: false, error: error.message });
   }
 });
 

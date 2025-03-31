@@ -8,12 +8,34 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/index.js",
+      "src": "/api/bookings",
+      "dest": "index.js",
       "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": "true"
+      }
+    },
+    {
+      "src": "/api/health",
+      "dest": "index.js",
+      "methods": ["GET", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": "true"
+      }
+    },
+    {
+      "src": "/api/status",
+      "dest": "index.js",
+      "methods": ["GET", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": "true"
       }
@@ -29,5 +51,12 @@
         "Access-Control-Allow-Credentials": "true"
       }
     }
-  ]
+  ],
+  "env": {
+    "MONGODB_URI": "mongodb+srv://vivekdixit48313:UaSonIQubZp55sPQ@travel.yu4rxyc.mongodb.net/Uttrakhand_booking_services?retryWrites=true&w=majority&appName=travel",
+    "SMS_API_URL": "https://api.sms-gate.app/3rdparty/v1/message",
+    "SMS_USERNAME": "CRVBJX",
+    "SMS_PASSWORD": "l2tzqzjcuqjsbf",
+    "NODE_ENV": "production"
+  }
 } 
