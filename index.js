@@ -8,6 +8,8 @@ const Booking = require('./models/Booking');
 const { sendEmail } = require('./services/emailService');
 const { sendSMS } = require('./services/smsService');
 const bookingsRouter = require('./routes/bookings');
+const feedbackRouter = require('./routes/feedback');
+const contactRouter = require('./routes/contact');
 
 const app = express();
 
@@ -85,6 +87,8 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/bookings', bookingsRouter);
+app.use('/api/feedback', feedbackRouter);
+app.use('/api/contact', contactRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
