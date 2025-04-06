@@ -168,7 +168,7 @@ const createEmailTemplate = (data) => {
           <div class="divider"></div>
           <div class="footer">
             <p>Thank you for choosing Uttarakhand Road Trips</p>
-            <p>For any queries, please contact us at +91 9454534818</p>
+            <p>For any queries, please contact us at  8077757674</p>
             <p>© ${new Date().getFullYear()} Uttarakhand Road Trips. All rights reserved.</p>
           </div>
         </div>
