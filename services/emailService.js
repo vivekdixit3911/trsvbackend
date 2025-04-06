@@ -25,7 +25,7 @@ transporter.verify(function(error, success) {
 
 // Create a beautiful HTML email template
 const createEmailTemplate = (data) => {
-  const { title, greeting, content, footer, buttonText, buttonLink } = data;
+  const { title, greeting, content, footer, buttonText, buttonLink, phoneNumber } = data;
   
   return `
     <!DOCTYPE html>
@@ -92,6 +92,16 @@ const createEmailTemplate = (data) => {
           font-weight: bold;
           margin: 20px 0;
         }
+        .whatsapp-button {
+          display: inline-block;
+          background: #25D366;
+          color: white;
+          text-decoration: none;
+          padding: 12px 25px;
+          border-radius: 5px;
+          font-weight: bold;
+          margin: 20px 0;
+        }
         .footer {
           text-align: center;
           margin-top: 30px;
@@ -142,6 +152,14 @@ const createEmailTemplate = (data) => {
           <div class="message">
             ${content || ''}
           </div>
+          ${phoneNumber ? `
+            <div style="text-align: center;">
+              <a href="https://wa.me/91${phoneNumber.replace(/\D/g, '')}" class="whatsapp-button">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">
+                Chat on WhatsApp
+              </a>
+            </div>
+          ` : ''}
           ${buttonText && buttonLink ? `
             <div style="text-align: center;">
               <a href="${buttonLink}" class="button">${buttonText}</a>
@@ -168,9 +186,14 @@ const sendEmail = async ({ to, subject, text, html, templateData }) => {
     // Use template if templateData is provided
     const emailHtml = templateData ? createEmailTemplate(templateData) : html;
 
-    // Add a unique identifier to the subject to prevent threading
-    const uniqueId = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-    const uniqueSubject = `[${uniqueId}] ${subject}`;
+    // Add current time to the subject to prevent threading
+    const currentTime = new Date().toLocaleTimeString('en-US', { 
+      hour12: false, 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    const uniqueSubject = `[${currentTime}] ${subject}`;
 
     // Send email to each recipient
     const emailPromises = recipients.map(async (recipient) => {
@@ -181,9 +204,9 @@ const sendEmail = async ({ to, subject, text, html, templateData }) => {
         text: text,
         html: emailHtml,
         headers: {
-          'X-Entity-Ref-ID': uniqueId,
-          'In-Reply-To': uniqueId,
-          'References': uniqueId
+          'X-Entity-Ref-ID': currentTime,
+          'In-Reply-To': currentTime,
+          'References': currentTime
         }
       };
 

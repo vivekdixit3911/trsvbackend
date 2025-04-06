@@ -15,28 +15,26 @@ router.post('/', async (req, res) => {
     const smsMessage = `New Booking: From ${booking.from} to ${booking.to}, Date: ${new Date(booking.date).toLocaleDateString()}, Passengers: ${booking.passengers}, Phone: ${booking.phoneNumber}`;
     await sendSMS(smsMessage);
 
-    // Send email notification to admin with beautiful template
+    // Send email notification to admin
     await sendEmail({
-      to: ['vivekdixit48313@gmail.com'],
-      subject: `New Booking from ${booking.from}`,
+      to: 'vivekdixit48313@gmail.com',
+      subject: 'New Booking Request',
       templateData: {
-        title: 'New Booking Received',
-        greeting: 'Hello Admin!',
+        title: 'New Booking Request',
+        greeting: 'Hello Admin,',
         content: `
-          <p>A new booking has been received:</p>
           <div class="highlight">
+            <h3>Booking Details:</h3>
             <p><strong>From:</strong> ${booking.from}</p>
             <p><strong>To:</strong> ${booking.to}</p>
             <p><strong>Date:</strong> ${new Date(booking.date).toLocaleDateString()}</p>
-            <p><strong>Time:</strong> ${new Date(booking.date).toLocaleTimeString()}</p>
+            <p><strong>Time:</strong> ${booking.time}</p>
             <p><strong>Passengers:</strong> ${booking.passengers}</p>
             <p><strong>Car Type:</strong> ${booking.carType}</p>
-            <p><strong>Phone Number:</strong> ${booking.phoneNumber}</p>
+            <p><strong>Phone:</strong> ${booking.phoneNumber}</p>
           </div>
-          <p>This booking has been automatically saved to our database.</p>
         `,
-        buttonText: 'View All Bookings',
-        buttonLink: 'https://trsv.vercel.app/admin/bookings'
+        phoneNumber: booking.phoneNumber
       }
     });
 
