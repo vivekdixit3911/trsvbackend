@@ -60,6 +60,14 @@ const createEmailTemplate = (data) => {
           font-size: 24px;
           font-weight: 700;
         }
+        .company-name {
+          color: #22c55e;
+          font-size: 28px;
+          font-weight: bold;
+          margin-bottom: 15px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
         .content {
           background-color: white;
           padding: 30px 20px;
@@ -126,7 +134,7 @@ const createEmailTemplate = (data) => {
     <body>
       <div class="container">
         <div class="header">
-          <img src="https://trsv.vercel.app/logo.png" alt="Uttarakhand Road Trips" class="logo">
+          <div class="company-name">Uttarakhand Road Trips</div>
           <h1>${title || 'Uttarakhand Road Trips'}</h1>
         </div>
         <div class="content">
