@@ -38,8 +38,8 @@ router.post('/', async (req, res) => {
           </div>
           <p>You can view all contact submissions in the admin dashboard.</p>
         `,
-        buttonText: 'View All Contact Submissions',
-        buttonLink: 'https://trsv.vercel.app/admin/contact'
+        // buttonText: 'View All Contact Submissions',
+        // buttonLink: 'https://trsv.vercel.app/admin/contact'
       }
     });
 

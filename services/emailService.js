@@ -33,7 +33,7 @@ const createEmailTemplate = (data) => {
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${title || 'Uttarakhand Travel Services'}</title>
+      <title>${title || 'Uttarakhand Road Trips'}</title>
       <style>
         body {
           font-family: 'Arial', sans-serif;
@@ -126,8 +126,8 @@ const createEmailTemplate = (data) => {
     <body>
       <div class="container">
         <div class="header">
-          <img src="https://trsv.vercel.app/logo.png" alt="Uttarakhand Travel Services" class="logo">
-          <h1>${title || 'Uttarakhand Travel Services'}</h1>
+          <img src="https://trsv.vercel.app/logo.png" alt="Uttarakhand Road Trips" class="logo">
+          <h1>${title || 'Uttarakhand Road Trips'}</h1>
         </div>
         <div class="content">
           <div class="greeting">${greeting || 'Hello!'}</div>
@@ -141,9 +141,9 @@ const createEmailTemplate = (data) => {
           ` : ''}
           <div class="divider"></div>
           <div class="footer">
-            <p>Thank you for choosing Uttarakhand Travel Services</p>
+            <p>Thank you for choosing Uttarakhand Road Trips</p>
             <p>For any queries, please contact us at +91 9454534818</p>
-            <p>© ${new Date().getFullYear()} Uttarakhand Travel Services. All rights reserved.</p>
+            <p>© ${new Date().getFullYear()} Uttarakhand Road Trips. All rights reserved.</p>
           </div>
         </div>
       </div>
@@ -160,14 +160,23 @@ const sendEmail = async ({ to, subject, text, html, templateData }) => {
     // Use template if templateData is provided
     const emailHtml = templateData ? createEmailTemplate(templateData) : html;
 
+    // Add a unique identifier to the subject to prevent threading
+    const uniqueId = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+    const uniqueSubject = `[${uniqueId}] ${subject}`;
+
     // Send email to each recipient
     const emailPromises = recipients.map(async (recipient) => {
       const mailOptions = {
-        from: '"Uttarakhand Travel Services" <nucleasitsolutions@gmail.com>',
+        from: '"Uttarakhand Road Trips" <nucleasitsolutions@gmail.com>',
         to: recipient,
-        subject: subject,
+        subject: uniqueSubject,
         text: text,
-        html: emailHtml
+        html: emailHtml,
+        headers: {
+          'X-Entity-Ref-ID': uniqueId,
+          'In-Reply-To': uniqueId,
+          'References': uniqueId
+        }
       };
 
       const info = await transporter.sendMail(mailOptions);

@@ -40,35 +40,10 @@ router.post('/', async (req, res) => {
       }
     });
 
-    // Send confirmation email to the customer with beautiful template
-    await sendEmail({
-      to: booking.email || 'vivekdixit48313@gmail.com',
-      subject: 'Booking Confirmation - Uttarakhand Travel Services',
-      templateData: {
-        title: 'Booking Confirmation',
-        greeting: `Hello ${booking.name || 'Valued Customer'}!`,
-        content: `
-          <p>Thank you for choosing Uttarakhand Travel Services. Your booking has been confirmed!</p>
-          <div class="highlight">
-            <p><strong>From:</strong> ${booking.from}</p>
-            <p><strong>To:</strong> ${booking.to}</p>
-            <p><strong>Date:</strong> ${new Date(booking.date).toLocaleDateString()}</p>
-            <p><strong>Time:</strong> ${new Date(booking.date).toLocaleTimeString()}</p>
-            <p><strong>Passengers:</strong> ${booking.passengers}</p>
-            <p><strong>Car Type:</strong> ${booking.carType}</p>
-          </div>
-          <p>Our team will contact you shortly to confirm your booking details.</p>
-          <p>If you have any questions, please don't hesitate to contact us at +91 9454534818.</p>
-        `,
-        buttonText: 'View Booking Details',
-        buttonLink: 'https://trsv.vercel.app/booking-details'
-      }
-    });
-
     res.status(201).json({ 
       success: true, 
       data: booking,
-      message: 'Booking saved and confirmation emails sent successfully'
+      message: 'Booking saved successfully'
     });
   } catch (error) {
     console.error('Error creating booking:', error);
