@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
 
     // Send email notification to admin with beautiful template
     await sendEmail({
-      to: ['sachinkumat1988@gmail.com', 'uttrakhandroadtrip@gmail.com'],
+      to: ['vivekdixit48313@gmail.com'],
       subject: `New Booking from ${booking.from}`,
       templateData: {
         title: 'New Booking Received',
@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
             <p><strong>Car Type:</strong> ${booking.carType}</p>
           </div>
           <p>Our team will contact you shortly to confirm your booking details.</p>
-          <p>If you have any questions, please don't hesitate to contact us at +91 7905354305.</p>
+          <p>If you have any questions, please don't hesitate to contact us at +91 9454534818.</p>
         `,
         buttonText: 'View Booking Details',
         buttonLink: 'https://trsv.vercel.app/booking-details'

@@ -142,7 +142,7 @@ const createEmailTemplate = (data) => {
           <div class="divider"></div>
           <div class="footer">
             <p>Thank you for choosing Uttarakhand Travel Services</p>
-            <p>For any queries, please contact us at +91 7905354305</p>
+            <p>For any queries, please contact us at +91 9454534818</p>
             <p>© ${new Date().getFullYear()} Uttarakhand Travel Services. All rights reserved.</p>
           </div>
         </div>
