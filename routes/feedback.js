@@ -20,17 +20,27 @@ router.post('/', async (req, res) => {
     // Save feedback
     await feedback.save();
 
-    // Send notification email to admin
+    // Send notification email to admin with beautiful template
     await sendEmail({
       to: 'nucleasitsolutions@gmail.com',
       subject: 'New Feedback Received',
-      text: `
-        New feedback received from ${name}
-        Email: ${email}
-        Phone: ${phone}
-        Rating: ${rating}/5
-        Message: ${message}
-      `
+      templateData: {
+        title: 'New Feedback Received',
+        greeting: 'Hello Admin!',
+        content: `
+          <p>A new feedback has been received from a customer:</p>
+          <div class="highlight">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <p><strong>Rating:</strong> ${rating}/5</p>
+            <p><strong>Message:</strong> ${message}</p>
+          </div>
+          <p>You can view all feedback in the admin dashboard.</p>
+        `,
+        buttonText: 'View All Feedback',
+        buttonLink: 'https://trsv.vercel.app/admin/feedback'
+      }
     });
 
     res.status(201).json({

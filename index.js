@@ -5,8 +5,6 @@ const bodyParser = require('body-parser');
 
 // Import services
 const Booking = require('./models/Booking');
-const { sendEmail } = require('./services/emailService');
-const { sendSMS } = require('./services/smsService');
 const bookingsRouter = require('./routes/bookings');
 const feedbackRouter = require('./routes/feedback');
 const contactRouter = require('./routes/contact');
@@ -66,70 +64,17 @@ const connectDB = async () => {
 // Connect to MongoDB
 connectDB();
 
-// Root route
-app.get('/', (req, res) => {
-  console.log('📝 Root route accessed');
-  res.json({
-    status: 'success',
-    message: 'Welcome to Uttarakhand Travel Services API',
-    services: {
-      mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-      email: 'nucleasitsolutions@gmail.com',
-      sms: 'SMS-Gate.app'
-    },
-    endpoints: {
-      health: '/api/health',
-      status: '/api/status',
-      bookings: '/api/bookings'
-    }
-  });
-});
-
 // Routes
 app.use('/api/bookings', bookingsRouter);
 app.use('/api/feedback', feedbackRouter);
 app.use('/api/contact', contactRouter);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  console.log('🔍 Health check requested');
-  res.status(200).json({ 
-    status: 'ok',
-    message: 'All services are up and running! 🚀',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Server status endpoint
-app.get('/api/status', async (req, res) => {
+app.get('/api/health', async (req, res) => {
   try {
     // Check MongoDB connection
     const mongoStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
     
-    // Check email service
-    let emailStatus = 'unknown';
-    try {
-      await sendEmail({
-        to: 'test@example.com',
-        subject: 'Test Email',
-        text: 'This is a test email to verify the email service.'
-      });
-      emailStatus = 'working';
-    } catch (error) {
-      emailStatus = 'error';
-      console.error('Email service error:', error);
-    }
-
-    // Check SMS service
-    let smsStatus = 'unknown';
-    try {
-      const smsResult = await sendSMS('SMS Service Test: Service is operational and ready to send booking notifications.');
-      smsStatus = smsResult ? 'working' : 'error';
-    } catch (error) {
-      smsStatus = 'error';
-      console.error('SMS service error:', error);
-    }
-
     // Get server uptime
     const uptime = process.uptime();
 
@@ -144,15 +89,6 @@ app.get('/api/status', async (req, res) => {
           status: mongoStatus,
           database: mongoose.connection.name,
           host: mongoose.connection.host
-        },
-        email: {
-          status: emailStatus,
-          user: 'nucleasitsolutions@gmail.com'
-        },
-        sms: {
-          status: smsStatus,
-          gateway: 'SMS-Gate.app',
-          phoneNumber: '+917905354305'
         }
       },
       server: {

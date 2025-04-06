@@ -23,10 +23,142 @@ transporter.verify(function(error, success) {
   }
 });
 
-const sendEmail = async ({ to, subject, text, html }) => {
+// Create a beautiful HTML email template
+const createEmailTemplate = (data) => {
+  const { title, greeting, content, footer, buttonText, buttonLink } = data;
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${title || 'Uttarakhand Travel Services'}</title>
+      <style>
+        body {
+          font-family: 'Arial', sans-serif;
+          line-height: 1.6;
+          color: #333;
+          margin: 0;
+          padding: 0;
+          background-color: #f5f5f5;
+        }
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+        .header {
+          background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+          color: white;
+          padding: 30px 20px;
+          text-align: center;
+          border-radius: 10px 10px 0 0;
+        }
+        .header h1 {
+          margin: 0;
+          font-size: 24px;
+          font-weight: 700;
+        }
+        .content {
+          background-color: white;
+          padding: 30px 20px;
+          border-radius: 0 0 10px 10px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .greeting {
+          font-size: 18px;
+          margin-bottom: 20px;
+          color: #1e40af;
+        }
+        .message {
+          margin-bottom: 30px;
+        }
+        .button {
+          display: inline-block;
+          background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+          color: white;
+          text-decoration: none;
+          padding: 12px 25px;
+          border-radius: 5px;
+          font-weight: bold;
+          margin: 20px 0;
+        }
+        .footer {
+          text-align: center;
+          margin-top: 30px;
+          font-size: 14px;
+          color: #666;
+        }
+        .footer p {
+          margin: 5px 0;
+        }
+        .logo {
+          max-width: 150px;
+          margin-bottom: 15px;
+        }
+        .divider {
+          height: 1px;
+          background-color: #e5e7eb;
+          margin: 20px 0;
+        }
+        .highlight {
+          background-color: #f0f9ff;
+          padding: 15px;
+          border-radius: 5px;
+          border-left: 4px solid #3b82f6;
+          margin: 20px 0;
+        }
+        @media only screen and (max-width: 600px) {
+          .container {
+            width: 100%;
+            padding: 10px;
+          }
+          .header {
+            padding: 20px 15px;
+          }
+          .content {
+            padding: 20px 15px;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <img src="https://trsv.vercel.app/logo.png" alt="Uttarakhand Travel Services" class="logo">
+          <h1>${title || 'Uttarakhand Travel Services'}</h1>
+        </div>
+        <div class="content">
+          <div class="greeting">${greeting || 'Hello!'}</div>
+          <div class="message">
+            ${content || ''}
+          </div>
+          ${buttonText && buttonLink ? `
+            <div style="text-align: center;">
+              <a href="${buttonLink}" class="button">${buttonText}</a>
+            </div>
+          ` : ''}
+          <div class="divider"></div>
+          <div class="footer">
+            <p>Thank you for choosing Uttarakhand Travel Services</p>
+            <p>For any queries, please contact us at +91 7905354305</p>
+            <p>© ${new Date().getFullYear()} Uttarakhand Travel Services. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+};
+
+const sendEmail = async ({ to, subject, text, html, templateData }) => {
   try {
     // Ensure 'to' is always an array
     const recipients = Array.isArray(to) ? to : [to];
+    
+    // Use template if templateData is provided
+    const emailHtml = templateData ? createEmailTemplate(templateData) : html;
 
     // Send email to each recipient
     const emailPromises = recipients.map(async (recipient) => {
@@ -35,7 +167,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
         to: recipient,
         subject: subject,
         text: text,
-        html: html
+        html: emailHtml
       };
 
       const info = await transporter.sendMail(mailOptions);
@@ -51,4 +183,4 @@ const sendEmail = async ({ to, subject, text, html }) => {
   }
 };
 
-module.exports = { sendEmail }; 
+module.exports = { sendEmail, createEmailTemplate }; 

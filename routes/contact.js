@@ -20,17 +20,27 @@ router.post('/', async (req, res) => {
     // Save contact submission
     await contact.save();
 
-    // Send notification email to admin
+    // Send notification email to admin with beautiful template
     await sendEmail({
       to: 'nucleasitsolutions@gmail.com',
       subject: 'New Contact Form Submission',
-      text: `
-        New contact form submission from ${name}
-        Email: ${email}
-        Phone: ${phone}
-        Subject: ${subject}
-        Message: ${message}
-      `
+      templateData: {
+        title: 'New Contact Form Submission',
+        greeting: 'Hello Admin!',
+        content: `
+          <p>A new contact form submission has been received:</p>
+          <div class="highlight">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <p><strong>Message:</strong> ${message}</p>
+          </div>
+          <p>You can view all contact submissions in the admin dashboard.</p>
+        `,
+        buttonText: 'View All Contact Submissions',
+        buttonLink: 'https://trsv.vercel.app/admin/contact'
+      }
     });
 
     res.status(201).json({

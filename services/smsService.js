@@ -1,9 +1,9 @@
 const axios = require('axios');
 
 const SMS_API_URL = process.env.SMS_API_URL || 'https://api.sms-gate.app/3rdparty/v1/message';
-const SMS_USERNAME = process.env.SMS_USERNAME || 'CRVBJX';
+const SMS_USERNAME = process.env.SMS_USERNAME || 'CRVBJX'; //CRVBJX
 const SMS_PASSWORD = process.env.SMS_PASSWORD || 'l2tzqzjcuqjsbf';
-const ADMIN_PHONE = '+917905354305';
+const ADMIN_PHONE = '+918077757674';
 
 // Log that SMS service is active
 console.log('🚀 SMS Service is active and ready to send messages');

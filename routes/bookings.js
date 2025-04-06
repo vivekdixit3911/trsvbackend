@@ -15,61 +15,54 @@ router.post('/', async (req, res) => {
     const smsMessage = `New Booking: From ${booking.from} to ${booking.to}, Date: ${new Date(booking.date).toLocaleDateString()}, Passengers: ${booking.passengers}, Phone: ${booking.phoneNumber}`;
     await sendSMS(smsMessage);
 
-    // Create a detailed email HTML template
-    const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">New Booking Details</h2>
-        
-        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
-          <h3 style="color: #2c3e50; margin-top: 0;">Booking Information</h3>
-          <p><strong>From:</strong> ${booking.from}</p>
-          <p><strong>To:</strong> ${booking.to}</p>
-          <p><strong>Date:</strong> ${new Date(booking.date).toLocaleDateString()}</p>
-          <p><strong>Time:</strong> ${new Date(booking.date).toLocaleTimeString()}</p>
-          <p><strong>Passengers:</strong> ${booking.passengers}</p>
-          <p><strong>Car Type:</strong> ${booking.carType}</p>
-          <p><strong>Phone Number:</strong> ${booking.phoneNumber}</p>
-        </div>
-
-        <div style="background-color: #e8f4f8; padding: 15px; border-radius: 5px; margin-top: 20px;">
-          <p style="margin: 0; color: #2c3e50;">This booking has been automatically saved to our database.</p>
-        </div>
-      </div>
-    `;
-
-    // Send email notification to admin
+    // Send email notification to admin with beautiful template
     await sendEmail({
-      to: ['vivekdixit48313@gmail.com', 'priyamajhwar9648@gmail.com'],
+      to: ['sachinkumat1988@gmail.com', 'uttrakhandroadtrip@gmail.com'],
       subject: `New Booking from ${booking.from}`,
-      html: emailHtml
+      templateData: {
+        title: 'New Booking Received',
+        greeting: 'Hello Admin!',
+        content: `
+          <p>A new booking has been received:</p>
+          <div class="highlight">
+            <p><strong>From:</strong> ${booking.from}</p>
+            <p><strong>To:</strong> ${booking.to}</p>
+            <p><strong>Date:</strong> ${new Date(booking.date).toLocaleDateString()}</p>
+            <p><strong>Time:</strong> ${new Date(booking.date).toLocaleTimeString()}</p>
+            <p><strong>Passengers:</strong> ${booking.passengers}</p>
+            <p><strong>Car Type:</strong> ${booking.carType}</p>
+            <p><strong>Phone Number:</strong> ${booking.phoneNumber}</p>
+          </div>
+          <p>This booking has been automatically saved to our database.</p>
+        `,
+        buttonText: 'View All Bookings',
+        buttonLink: 'https://trsv.vercel.app/admin/bookings'
+      }
     });
 
-    // Send confirmation email to the customer
-    const customerEmailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">Booking Confirmation</h2>
-        
-        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
-          <h3 style="color: #2c3e50; margin-top: 0;">Your Booking Details</h3>
-          <p><strong>From:</strong> ${booking.from}</p>
-          <p><strong>To:</strong> ${booking.to}</p>
-          <p><strong>Date:</strong> ${new Date(booking.date).toLocaleDateString()}</p>
-          <p><strong>Time:</strong> ${new Date(booking.date).toLocaleTimeString()}</p>
-          <p><strong>Passengers:</strong> ${booking.passengers}</p>
-          <p><strong>Car Type:</strong> ${booking.carType}</p>
-        </div>
-
-        <div style="background-color: #e8f4f8; padding: 15px; border-radius: 5px; margin-top: 20px;">
-          <p style="margin: 0; color: #2c3e50;">Thank you for choosing our service. We will contact you shortly to confirm your booking.</p>
-        </div>
-      </div>
-    `;
-
-    // Send confirmation email to the customer
+    // Send confirmation email to the customer with beautiful template
     await sendEmail({
       to: booking.email || 'vivekdixit48313@gmail.com',
       subject: 'Booking Confirmation - Uttarakhand Travel Services',
-      html: customerEmailHtml
+      templateData: {
+        title: 'Booking Confirmation',
+        greeting: `Hello ${booking.name || 'Valued Customer'}!`,
+        content: `
+          <p>Thank you for choosing Uttarakhand Travel Services. Your booking has been confirmed!</p>
+          <div class="highlight">
+            <p><strong>From:</strong> ${booking.from}</p>
+            <p><strong>To:</strong> ${booking.to}</p>
+            <p><strong>Date:</strong> ${new Date(booking.date).toLocaleDateString()}</p>
+            <p><strong>Time:</strong> ${new Date(booking.date).toLocaleTimeString()}</p>
+            <p><strong>Passengers:</strong> ${booking.passengers}</p>
+            <p><strong>Car Type:</strong> ${booking.carType}</p>
+          </div>
+          <p>Our team will contact you shortly to confirm your booking details.</p>
+          <p>If you have any questions, please don't hesitate to contact us at +91 7905354305.</p>
+        `,
+        buttonText: 'View Booking Details',
+        buttonLink: 'https://trsv.vercel.app/booking-details'
+      }
     });
 
     res.status(201).json({ 
