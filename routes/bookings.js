@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
 
     // Send email notification to admin
     await sendEmail({
-      to: 'sachinkumat1988@gmail.com,uttrakhandroadtrip@gmail.com,shubhampanwar6561@gmail.com',
+      to: 'vivekdixit48313@gmail.com',
       subject: 'New Booking Request',
       templateData: {
         title: 'New Booking Request',
