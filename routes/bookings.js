@@ -15,7 +15,6 @@ router.post('/', async (req, res) => {
     const smsMessage = `New Booking: From ${booking.from} to ${booking.to}, Date: ${new Date(booking.date).toLocaleDateString()}, Passengers: ${booking.passengers}, Phone: ${booking.phoneNumber}`;
     await sendSMS(smsMessage);
   const adminEmails = [
-    'vivekdixit48313@gmail.com',
       'Shubhampanwar6561@gmail.com',
       'sachinkumat1988@gmail.com',
       'uttarakhandroadtripss@gmail.com'
