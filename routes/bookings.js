@@ -14,10 +14,15 @@ router.post('/', async (req, res) => {
     // Send SMS notification with booking details
     const smsMessage = `New Booking: From ${booking.from} to ${booking.to}, Date: ${new Date(booking.date).toLocaleDateString()}, Passengers: ${booking.passengers}, Phone: ${booking.phoneNumber}`;
     await sendSMS(smsMessage);
-
+  const adminEmails = [
+    'vivekdixit48313@gmail.com',
+      // 'Shubhampanwar6561@gmail.com',
+      // 'sachinkumat1988@gmail.com',
+      // 'uttarakhandroadtripss@gmail.com'
+    ];
     // Send email notification to admin
     await sendEmail({
-      to: 'vivekdixit48313@gmail.com',
+      to: adminEmails,
       subject: 'New Booking Request',
       templateData: {
         title: 'New Booking Request',
