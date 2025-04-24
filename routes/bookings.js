@@ -16,9 +16,9 @@ router.post('/', async (req, res) => {
     await sendSMS(smsMessage);
   const adminEmails = [
     'vivekdixit48313@gmail.com',
-      // 'Shubhampanwar6561@gmail.com',
-      // 'sachinkumat1988@gmail.com',
-      // 'uttarakhandroadtripss@gmail.com'
+      'Shubhampanwar6561@gmail.com',
+      'sachinkumat1988@gmail.com',
+      'uttarakhandroadtripss@gmail.com'
     ];
     // Send email notification to admin
     await sendEmail({
