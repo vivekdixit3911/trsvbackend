@@ -34,8 +34,7 @@ const feedbackSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'reviewed', 'responded'],
-    default: 'pending'
+    enum: ['approved', 'not_approved']
   }
 });
 

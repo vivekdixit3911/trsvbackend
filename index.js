@@ -8,6 +8,10 @@ const Booking = require('./models/Booking');
 const bookingsRouter = require('./routes/bookings');
 const feedbackRouter = require('./routes/feedback');
 const contactRouter = require('./routes/contact');
+// const reviewsRouter = require('./routes/reviews');
+
+// Import photo routes
+const photoRoutes = require('./routes/photos');
 
 const app = express();
 
@@ -16,32 +20,28 @@ console.log('🚀 Starting server in environment:', process.env.NODE_ENV || 'dev
 
 // CORS Configuration
 const corsOptions = {
-  origin: [
-    'http://localhost:8080',
-    'http://localhost:5173',
-    'https://trsv.vercel.app',
-    'https://trsvbackend.vercel.app',
-    'https://trsv-black.vercel.app'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  origin: ['https://www.uttarakhandroadtrips.com', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  maxAge: 86400 // 24 hours
+  credentials: true
 };
 
-// Middleware
+// Apply CORS middleware
 app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', cors(corsOptions));
+
+// Apply other middleware
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Request logging middleware
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
-
-// Handle preflight requests
-app.options('*', cors(corsOptions));
 
 // MongoDB Connection
 const connectDB = async () => {
@@ -68,6 +68,10 @@ connectDB();
 app.use('/api/bookings', bookingsRouter);
 app.use('/api/feedback', feedbackRouter);
 app.use('/api/contact', contactRouter);
+// app.use('/api/reviews', reviewsRouter);
+
+// Add photo routes
+app.use('/api/photos', photoRoutes);
 
 // Health check endpoint
 app.get('/api/health', async (req, res) => {
